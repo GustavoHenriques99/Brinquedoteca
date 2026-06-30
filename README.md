@@ -4,17 +4,6 @@ Projeto acadêmico desenvolvido como parte dos requisitos de avaliação do curs
 
 ---
 
-## Equipe
-
-| Nome | RA |
-|---|---|
-| Carlos Daniel Prates | 0771/26-1 |
-| Gabriel Henriques dos Santos | 0244/25-1 |
-| Gustavo Henriques dos Santos | 2101/19-1 |
-| Jean Milo de Oliveira | 0215/09-0 |
-
----
-
 ## Sobre o Projeto
 
 O sistema tem como objetivo auxiliar professores supervisores e funcionários de brinquedotecas escolares no gerenciamento do acervo de brinquedos e jogos, no controle de empréstimos e no acompanhamento dos alunos. A solução oferece uma interface web intuitiva integrada a uma API REST, centralizando as operações de cadastro, estoque, empréstimos e geração de relatórios.
