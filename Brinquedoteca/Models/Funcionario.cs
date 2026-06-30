@@ -15,6 +15,8 @@ namespace Brinquedoteca.Models
         [StringLength(200, MinimumLength = 3, ErrorMessage = "O Campo nome deve ter entre 3 a 200 caracteres")]
         public required string Nome { get; set; }
 
+        
+
         [Required(ErrorMessage = "O campo Sobrenome é obrigatório")]
         [StringLength(200, MinimumLength = 3, ErrorMessage = "O Campo Sobrenome deve ter entre 3 a 200 caracteres")]
         public required string Sobrenome { get; set; }
