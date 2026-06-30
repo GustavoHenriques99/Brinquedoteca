@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home — Brinquedoteca</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+</head>
+<body>
+<div class="overlay"></div>
+<div id="toast"></div>
+
+<!-- MODAL CADASTRAR ALUNO -->
+<div class="modal-overlay" id="modalAluno">
+  <div class="modal-box">
+    <h3><i class="fa-solid fa-child-reaching" style="color:var(--laranja)"></i> Cadastrar Aluno</h3>
+    <div class="form-grid" style="grid-template-columns:1fr;gap:10px">
+      <input type="text"  id="aNome"      placeholder="Nome *">
+      <input type="text"  id="aSobrenome" placeholder="Sobrenome *">
+      <input type="date"  id="aNasc">
+      <input type="tel"   id="aTelefone"  placeholder="Telefone *">
+      <input type="email" id="aEmail"     placeholder="E-mail *">
+      <select id="aTurma" class="emp-select"><option value="">Selecione a turma…</option></select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="fecharModal('modalAluno')">Cancelar</button>
+      <button class="btn btn-sm" id="btnSalvarAluno"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR ALUNO -->
+<div class="modal-overlay" id="modalEditAluno">
+  <div class="modal-box">
+    <h3><i class="fa-solid fa-pen" style="color:var(--laranja)"></i> Editar Aluno</h3>
+    <input type="hidden" id="eaId">
+    <div class="form-grid" style="grid-template-columns:1fr;gap:10px">
+      <input type="text"  id="eaNome"      placeholder="Nome *">
+      <input type="text"  id="eaSobrenome" placeholder="Sobrenome *">
+      <input type="date"  id="eaNasc">
+      <input type="tel"   id="eaTelefone"  placeholder="Telefone *">
+      <input type="email" id="eaEmail"     placeholder="E-mail *">
+      <select id="eaTurma" class="emp-select"><option value="">Selecione a turma…</option></select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="fecharModal('modalEditAluno')">Cancelar</button>
+      <button class="btn btn-sm" id="btnSalvarEditAluno"><i class="fa-solid fa-floppy-disk"></i> Atualizar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EMPRÉSTIMO — busca por RA -->
+<div class="modal-overlay" id="modalEmprestimo">
+  <div class="modal-box">
+    <h3><i class="fa-solid fa-arrow-right-arrow-left" style="color:var(--laranja)"></i> Registrar Empréstimo</h3>
+    <div class="form-grid" style="grid-template-columns:1fr;gap:10px">
+
+      <!-- Campo RA -->
+      <div>
+        <label style="font-size:13px;font-weight:700;color:#666;display:block;margin-bottom:5px">
+          RA do Aluno
+        </label>
+        <input type="text" class="emp-select" id="eRaBusca"
+               placeholder="Digite o RA  ex: 0001/26-1"
+               maxlength="9" autocomplete="off"
+               inputmode="numeric"
+               style="width:100%;box-sizing:border-box;letter-spacing:1px;font-family:monospace;font-size:15px">
+        <div id="raFeedback" style="font-size:12px;margin-top:5px;min-height:18px;padding-left:2px"></div>
+      </div>
+
+      <select class="emp-select" id="eEstoque"><option value="">Selecione o item disponível…</option></select>
+      <label style="font-size:13px;font-weight:700;color:#666">Data prevista de devolução</label>
+      <input type="date" class="emp-select" id="eDevolucao">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="fecharModal('modalEmprestimo')">Cancelar</button>
+      <button class="btn btn-sm" id="btnSalvarEmp"><i class="fa-solid fa-floppy-disk"></i> Registrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="logo">
+      <i class="fa-solid fa-puzzle-piece"></i>
+      <h2>Brinquedoteca</h2>
+    </div>
+    <nav>
+      <ul>
+        <a href="index.html"><li class="active"><i class="fa-solid fa-house"></i> Home</li></a>
+        <a href="itens.html"><li><i class="fa-solid fa-cube"></i> Brinquedos</li></a>
+        <a href="cadastros.html"><li><i class="fa-solid fa-table-list"></i> Cadastros</li></a>
+        <a href="dashboard.html"><li><i class="fa-solid fa-chart-pie"></i> Dashboard</li></a>
+        <li onclick="sair()"><i class="fa-solid fa-right-from-bracket"></i> Sair</li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchGlobal" placeholder="Pesquisar alunos…">
+      </div>
+      <button class="btn" onclick="abrirModalEmprestimo()"><i class="fa-solid fa-plus"></i> Novo Empréstimo</button>
+      <button class="btn btn-success" onclick="recarregar()"><i class="fa-solid fa-rotate"></i></button>
+    </header>
+
+    <section class="cards">
+      <div class="card"><i class="fa-solid fa-cube"></i><h2 id="cItens">—</h2><p>Brinquedos</p></div>
+      <div class="card"><i class="fa-solid fa-child"></i><h2 id="cAlunos">—</h2><p>Alunos</p></div>
+      <div class="card"><i class="fa-solid fa-arrow-right-arrow-left"></i><h2 id="cEmp">—</h2><p>Empréstimos Ativos</p></div>
+      <div class="card"><i class="fa-solid fa-triangle-exclamation" style="color:#ef5350"></i><h2 id="cAtraso">—</h2><p>Em Atraso</p></div>
+    </section>
+
+    <!-- EMPRÉSTIMOS ATIVOS -->
+    <section class="section" id="secEmp">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-arrow-right-arrow-left"></i> Empréstimos Ativos</h2>
+        <button class="btn btn-sm" onclick="abrirModalEmprestimo()"><i class="fa-solid fa-plus"></i> Novo</button>
+      </div>
+      <!-- paginação empréstimos -->
+      <div class="pag-bar" id="pagBarEmp" style="display:none">
+        <button class="pag-btn" id="pagEmpPrev" onclick="mudarPagEmp(-1)">‹ Anterior</button>
+        <span id="pagEmpInfo" class="pag-info"></span>
+        <button class="pag-btn" id="pagEmpNext" onclick="mudarPagEmp(1)">Próximo ›</button>
+      </div>
+      <div id="tabelaEmpContainer"><div class="loader"><span class="spinner"></span> Carregando…</div></div>
+    </section>
+
+    <!-- ALUNOS -->
+    <section class="section" id="secAlunos">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-child-reaching"></i> Alunos Cadastrados</h2>
+        <button class="btn btn-sm" onclick="abrirModalAluno()"><i class="fa-solid fa-plus"></i> Novo</button>
+      </div>
+      <div class="filter-row">
+        <select id="filtroTurma" onchange="filtrarAlunos()"><option value="">Todas as turmas</option></select>
+        <select id="ordenarAlunos" onchange="filtrarAlunos()">
+          <option value="id">Por ID</option>
+          <option value="nome">Por Nome</option>
+          <option value="turma">Por Turma</option>
+          <option value="ra">Por RA</option>
+        </select>
+        <button class="sort-btn" onclick="toggleDir()"><i id="iconDir" class="fa-solid fa-arrow-up"></i></button>
+        <span class="count-badge" id="countAlunos"></span>
+      </div>
+      <!-- paginação alunos -->
+      <div class="pag-bar" id="pagBarAlunos">
+        <button class="pag-btn" id="pagAlunosPrev" onclick="mudarPagAlunos(-1)">‹ Anterior</button>
+        <span id="pagAlunosInfo" class="pag-info"></span>
+        <button class="pag-btn" id="pagAlunosNext" onclick="mudarPagAlunos(1)">Próximo ›</button>
+      </div>
+      <div id="tabelaAlunosContainer"><div class="loader"><span class="spinner"></span> Carregando…</div></div>
+    </section>
+  </main>
+</div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/pages/index.js"></script>
+</body>
+</html>

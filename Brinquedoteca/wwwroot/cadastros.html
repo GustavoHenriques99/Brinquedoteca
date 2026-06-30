@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastros — Brinquedoteca</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages/cadastros.css">
+</head>
+<body>
+<div class="overlay"></div>
+<div id="toast"></div>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="logo">
+      <i class="fa-solid fa-puzzle-piece"></i>
+      <h2>Brinquedoteca</h2>
+    </div>
+   <nav>
+      <ul>
+        <a href="index.html"><li><i class="fa-solid fa-house"></i> Home</li></a>
+        <a href="itens.html"><li><i class="fa-solid fa-cube"></i> Brinquedos</li></a>
+        <a href="cadastros.html"><li><i class="fa-solid fa-table-list"></i> Cadastros</li></a>
+        <a href="dashboard.html"><li><i class="fa-solid fa-chart-pie"></i> Dashboard</li></a>
+        <li onclick="sair()"><i class="fa-solid fa-right-from-bracket"></i> Sair</li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div style="flex:1">
+        <h1 style="font-size:22px;font-weight:900;color:#333">🗂️ Cadastros</h1>
+        <p style="color:#888;font-size:13px;margin-top:2px">Gerencie turmas, áreas e categorias — Enter para adicionar</p>
+      </div>
+      <button class="btn btn-success" onclick="recarregar()"><i class="fa-solid fa-rotate"></i></button>
+    </header>
+
+    <div class="cad-grid">
+
+      <!-- TURMAS -->
+      <div class="cad-card">
+        <h3><i class="fa-solid fa-users-rectangle"></i> Turmas</h3>
+        <div class="cad-row">
+          <input type="text" id="inputTurma" placeholder="Ex: 1A, TADS, ADS-2…" maxlength="50">
+          <button class="btn btn-sm" onclick="crud.turma.add()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <ul class="cad-list" id="listTurma"><li class="empty-cad">Carregando…</li></ul>
+      </div>
+
+      <!-- ÁREAS DE DESENVOLVIMENTO -->
+      <div class="cad-card">
+        <h3><i class="fa-solid fa-brain"></i> Áreas de Desenvolvimento</h3>
+        <div class="cad-row">
+          <input type="text" id="inputArea" placeholder="Ex: Coordenação Motora…" maxlength="50">
+          <button class="btn btn-sm" onclick="crud.area.add()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <ul class="cad-list" id="listArea"><li class="empty-cad">Carregando…</li></ul>
+      </div>
+
+      <!-- DESENVOLVIMENTO COGNITIVO -->
+      <div class="cad-card">
+        <h3><i class="fa-solid fa-lightbulb"></i> Desenvolvimento Cognitivo</h3>
+        <div class="cad-row">
+          <input type="text" id="inputCognitivo" placeholder="Ex: Raciocínio Lógico…" maxlength="50">
+          <button class="btn btn-sm" onclick="crud.cognitivo.add()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <ul class="cad-list" id="listCognitivo"><li class="empty-cad">Carregando…</li></ul>
+      </div>
+
+      <!-- STATUS DO ESTOQUE -->
+      <div class="cad-card">
+        <h3><i class="fa-solid fa-tags"></i> Status do Estoque</h3>
+        <div class="cad-row">
+          <input type="text" id="inputStatus" placeholder="Ex: Disponível, Manutenção…" maxlength="50">
+          <button class="btn btn-sm" onclick="crud.status.add()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <ul class="cad-list" id="listStatus"><li class="empty-cad">Carregando…</li></ul>
+      </div>
+
+      <!-- TIPOS DE ENTRADA -->
+      <div class="cad-card">
+        <h3><i class="fa-solid fa-truck-ramp-box"></i> Tipos de Entrada</h3>
+        <div class="cad-row">
+          <input type="text" id="inputTipoEntrada" placeholder="Ex: Compra, Doação…" maxlength="50">
+          <button class="btn btn-sm" onclick="crud.tipoEntrada.add()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <ul class="cad-list" id="listTipoEntrada"><li class="empty-cad">Carregando…</li></ul>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/pages/cadastros.js"></script>
+</body>
+</html>

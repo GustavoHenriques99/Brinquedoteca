@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Brinquedoteca</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages/login.css">
+</head>
+<body>
+<div class="overlay"></div>
+<div id="toast"></div>
+
+<div class="overlay"></div>
+<div id="toast"></div>
+
+<section class="login-screen">
+  <div class="login-box">
+
+    <div class="login-logo">
+      <i class="fa-solid fa-puzzle-piece"></i>
+      <h1>Brinquedoteca</h1>
+      <p>Sistema de Gestão Infantil</p>
+    </div>
+
+    <form class="login-form" id="loginForm">
+
+      <div class="input-wrap">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" id="email" placeholder="E-mail do funcionário" required autocomplete="username">
+      </div>
+
+      <div class="input-wrap">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="senha" placeholder="Senha" required autocomplete="current-password">
+      </div>
+
+      <div class="login-erro" id="loginErro"></div>
+
+      <button class="login-btn" type="submit" id="btnLogin">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        Entrar no Sistema
+      </button>
+
+    </form>
+
+  </div>
+</section>
+
+  <script src="js/api.js"></script>
+  <script src="js/pages/login.js"></script>
+</body>
+</html>

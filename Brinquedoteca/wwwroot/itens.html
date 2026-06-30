@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brinquedos — Brinquedoteca</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages/itens.css">
+</head>
+<body>
+<div class="overlay"></div>
+<div id="toast"></div>
+
+<div class="modal-overlay" id="modalTabelas">
+  <div class="modal-box" style="max-width:560px">
+    <h3><i class="fa-solid fa-table-list" style="color:var(--laranja)"></i> Tabelas Auxiliares</h3>
+
+    <!-- Abas -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="mudarAba('tabTipoEntrada')">
+        <i class="fa-solid fa-tag"></i> Tipo de Entrada
+      </button>
+      <button class="tab-btn" onclick="mudarAba('tabStatus')">
+        <i class="fa-solid fa-circle-check"></i> Status
+      </button>
+      <button class="tab-btn" onclick="mudarAba('tabDesenCog')">
+        <i class="fa-solid fa-brain"></i> Desenv. Cognitivo
+      </button>
+      <button class="tab-btn" onclick="mudarAba('tabAreaDesen')">
+        <i class="fa-solid fa-seedling"></i> Área de Desenv.
+      </button>
+    </div>
+
+    <!-- Aba: Tipo de Entrada -->
+    <div class="mgmt-page active" id="tabTipoEntrada">
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <input type="text" id="tEntradaNome" placeholder="Ex: Doação, Compra, Permuta…"
+               style="flex:1;padding:9px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--cinza-leve);outline:none;font-size:14px;">
+        <button class="btn btn-sm" onclick="salvarTipoEntrada()"><i class="fa-solid fa-plus"></i> Adicionar</button>
+      </div>
+      <div class="mgmt-scroll" id="listaTipoEntrada"></div>
+    </div>
+
+    <!-- Aba: Status -->
+    <div class="mgmt-page" id="tabStatus">
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <input type="text" id="sStatusNome" placeholder="Ex: Disponível, Emprestado, Em Manutenção…"
+               style="flex:1;padding:9px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--cinza-leve);outline:none;font-size:14px;">
+        <button class="btn btn-sm" onclick="salvarStatus()"><i class="fa-solid fa-plus"></i> Adicionar</button>
+      </div>
+      <div class="mgmt-scroll" id="listaStatus"></div>
+    </div>
+
+    <!-- Aba: Desenvolvimento Cognitivo -->
+    <div class="mgmt-page" id="tabDesenCog">
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <input type="text" id="dcNome" placeholder="Ex: Coordenação Motora, Raciocínio Lógico…"
+               style="flex:1;padding:9px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--cinza-leve);outline:none;font-size:14px;">
+        <button class="btn btn-sm" onclick="salvarDesenCog()"><i class="fa-solid fa-plus"></i> Adicionar</button>
+      </div>
+      <div class="mgmt-scroll" id="listaDesenCog"></div>
+    </div>
+
+    <!-- Aba: Área de Desenvolvimento -->
+    <div class="mgmt-page" id="tabAreaDesen">
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <input type="text" id="adNome" placeholder="Ex: Coordenação Motora, Linguagem, Criatividade…"
+               style="flex:1;padding:9px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--cinza-leve);outline:none;font-size:14px;">
+        <button class="btn btn-sm" onclick="salvarAreaDesen()"><i class="fa-solid fa-plus"></i> Adicionar</button>
+      </div>
+      <div class="mgmt-scroll" id="listaAreaDesen"></div>
+    </div>
+
+    <div class="modal-footer" style="margin-top:18px">
+      <button class="btn btn-danger btn-sm" onclick="fecharModal('modalTabelas')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalItem">
+  <div class="modal-box">
+    <h3><i class="fa-solid fa-cube" style="color:var(--laranja)"></i> Cadastrar Brinquedo / Item</h3>
+    <div class="form-grid" style="grid-template-columns:1fr;gap:10px">
+      <input type="text" id="iTipo"       placeholder="Tipo (ex: Brinquedo, Jogo, Livro) *">
+      <input type="text" id="iDescricao"  placeholder="Descrição (ex: Quebra-Cabeça) *">
+      <input type="text" id="iFaixaEtaria" placeholder="Faixa etária (ex: +3, Todas) *">
+      <select id="iDesenCognitivo">
+        <option value="">Desenvolvimento Cognitivo…</option>
+      </select>
+      <select id="iAreaDesen">
+        <option value="">Área de Desenvolvimento…</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="fecharModal('modalItem')">Cancelar</button>
+      <button class="btn btn-sm" id="btnSalvarItem">
+        <i class="fa-solid fa-floppy-disk"></i> Salvar
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalEditItem">
+  <div class="modal-box">
+    <h3><i class="fa-solid fa-pen" style="color:var(--laranja)"></i> Editar Brinquedo</h3>
+    <input type="hidden" id="eiId">
+    <div class="form-grid" style="grid-template-columns:1fr;gap:10px">
+      <input type="text" id="eiTipo"      placeholder="Tipo *">
+      <input type="text" id="eiDescricao" placeholder="Descrição *">
+      <input type="text" id="eiFaixa"     placeholder="Faixa Etária *">
+      <select id="eiCognitivo" style="padding:12px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--cinza-leve);font-family:inherit;font-size:14px;background:white;outline:none"></select>
+      <select id="eiArea"      style="padding:12px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--cinza-leve);font-family:inherit;font-size:14px;background:white;outline:none"></select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="fecharModal('modalEditItem')">Cancelar</button>
+      <button class="btn btn-sm" id="btnSalvarEditItem"><i class="fa-solid fa-floppy-disk"></i> Atualizar</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="logo">
+      <i class="fa-solid fa-puzzle-piece"></i>
+      <h2>Brinquedoteca</h2>
+    </div>
+   <nav>
+      <ul>
+        <a href="index.html"><li><i class="fa-solid fa-house"></i> Home</li></a>
+        <a href="itens.html"><li><i class="fa-solid fa-cube"></i> Brinquedos</li></a>
+        <a href="cadastros.html"><li><i class="fa-solid fa-table-list"></i> Cadastros</li></a>
+        <a href="dashboard.html"><li><i class="fa-solid fa-chart-pie"></i> Dashboard</li></a>
+        <li onclick="sair()"><i class="fa-solid fa-right-from-bracket"></i> Sair</li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="pesquisaItem" placeholder="Pesquisar brinquedo…">
+      </div>
+            <button class="btn" style="background:#5c35a8" onclick="abrirModalTabelas()">
+        <i class="fa-solid fa-table-list"></i> Tabelas Auxiliares
+      </button>
+      <button class="btn" onclick="abrirModalItem()">
+        <i class="fa-solid fa-plus"></i> Novo Item
+      </button>
+      <button class="btn btn-success" onclick="recarregar()">
+        <i class="fa-solid fa-rotate"></i>
+      </button>
+    </header>
+
+    <!-- CARDS -->
+    <section class="cards">
+      <div class="card">
+        <i class="fa-solid fa-cube"></i>
+        <h2 id="cTotal">—</h2>
+        <p>Total de Itens</p>
+      </div>
+      <div class="card">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <h2 id="cEstoque">—</h2>
+        <p>Unidades no Estoque</p>
+      </div>
+      <div class="card">
+        <i class="fa-solid fa-check-circle"></i>
+        <h2 id="cDisp">—</h2>
+        <p>Disponíveis</p>
+      </div>
+      <div class="card">
+        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+        <h2 id="cEmprestados">—</h2>
+        <p>Emprestados</p>
+      </div>
+    </section>
+
+    <!-- ESTOQUE (adicionar unidade ao estoque) -->
+    <section class="section">
+      <h2><i class="fa-solid fa-boxes-stacked"></i> Adicionar ao Estoque</h2>
+      <div class="estoque-form" id="estoqueForm">
+        <select id="eItem"><option value="">Selecione o item…</option></select>
+        <select id="eStatus"><option value="">Status…</option></select>
+        <select id="eTipoEntrada"><option value="">Tipo de Entrada…</option></select>
+        <button class="btn" id="btnAddEstoque">
+          <i class="fa-solid fa-plus"></i> Adicionar ao Estoque
+        </button>
+      </div>
+    </section>
+
+    <!-- LISTA DE ITENS -->
+    <section class="section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-list"></i> Itens Cadastrados</h2>
+      </div>
+      <div class="sort-filter-bar">
+        <select id="filtroTipo" onchange="aplicarFiltroItens()">
+          <option value="">Todos os tipos</option>
+        </select>
+        <select id="iOrdenarPor" onchange="aplicarFiltroItens()">
+          <option value="id">Ordenar por ID</option>
+          <option value="descricao">Ordenar por Descrição</option>
+          <option value="tipo">Ordenar por Tipo</option>
+          <option value="faixa">Ordenar por Faixa Etária</option>
+        </select>
+        <button class="sort-dir-btn" id="iDirBtn" onclick="toggleDirItens()" title="Alternar direção">↑</button>
+        <span class="result-count" id="iResultCount"></span>
+      </div>
+      <div id="tabelaItensContainer">
+        <div class="loader"><span class="spinner"></span> Carregando…</div>
+      </div>
+    </section>
+
+    <!-- ESTOQUE COMPLETO -->
+    <section class="section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-warehouse"></i> Estoque Detalhado</h2>
+      </div>
+      <div class="sort-filter-bar">
+        <select id="eFiltroStatus" onchange="aplicarFiltroEstoque()">
+          <option value="">Todos os status</option>
+        </select>
+        <select id="eOrdenarPor" onchange="aplicarFiltroEstoque()">
+          <option value="id">Ordenar por ID</option>
+          <option value="item">Ordenar por Item</option>
+          <option value="status">Ordenar por Status</option>
+          <option value="funcionario">Ordenar por Funcionário</option>
+        </select>
+        <button class="sort-dir-btn" id="eDirBtn" onclick="toggleDirEstoque()" title="Alternar direção">↑</button>
+        <span class="result-count" id="eResultCount"></span>
+      </div>
+      <div id="tabelaEstoqueContainer">
+        <div class="loader"><span class="spinner"></span> Carregando…</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/pages/itens.js"></script>
+</body>
+</html>

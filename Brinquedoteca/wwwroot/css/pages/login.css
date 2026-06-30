@@ -1,0 +1,96 @@
+/* ============================================================
+   LOGIN — estilos exclusivos da tela de login
+   ============================================================ */
+
+.login-screen {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  padding: 44px 40px;
+  border-radius: 28px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.14);
+  animation: fadeUp .6s ease;
+}
+
+.login-logo          { text-align: center; margin-bottom: 34px; }
+.login-logo i        { font-size: 56px; color: var(--laranja); margin-bottom: 10px; display: block; }
+.login-logo h1       { font-size: 24px; font-weight: 900; color: #444; }
+.login-logo p        { color: #999; font-size: 14px; margin-top: 4px; }
+
+.login-form          { display: flex; flex-direction: column; gap: 16px; }
+
+.input-wrap          { position: relative; }
+.input-wrap i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #bbb;
+  font-size: 15px;
+}
+.input-wrap input {
+  width: 100%;
+  padding: 14px 14px 14px 40px;
+  border-radius: 12px;
+  border: 1.5px solid #eee;
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+  transition: .2s;
+}
+.input-wrap input:focus {
+  border-color: var(--laranja);
+  box-shadow: 0 0 0 3px rgba(255,112,67,.13);
+}
+
+.login-btn {
+  background: var(--laranja);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: inherit;
+  transition: .25s;
+  margin-top: 6px;
+}
+.login-btn:hover    { background: var(--laranja-dark); transform: scale(1.03); }
+.login-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+.login-erro {
+  background: #fff0f0;
+  border: 1.5px solid #ffcdd2;
+  color: #c62828;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: none;
+  text-align: center;
+}
+
+.badge-offline {
+  display: inline-block;
+  margin-top: 18px;
+  background: #fff3cd;
+  color: #856404;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}

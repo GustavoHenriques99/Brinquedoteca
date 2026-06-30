@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Brinquedoteca</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/base.css?v=99">
+  <link rel="stylesheet" href="css/layout.css?v=99">
+  <link rel="stylesheet" href="css/pages/dashboard.css?v=99">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="overlay"></div>
+<div id="toast"></div>
+
+<!-- Modal Empréstimo -->
+<div class="modal-overlay" id="modalEmprestimo">
+  <div class="modal-box">
+    <h3><i class="fa-solid fa-arrow-right-arrow-left" style="color:var(--laranja)"></i> Registrar Empréstimo</h3>
+    <div class="form-grid" style="grid-template-columns:1fr;gap:10px">
+      <div>
+        <input type="text" class="emp-select" id="eRaBusca"
+               placeholder="Digite o RA do aluno (ex: 2101191)"
+               maxlength="7" autocomplete="off"
+               style="width:100%;box-sizing:border-box">
+        <div id="raFeedback" style="font-size:12px;margin-top:5px;min-height:18px;padding-left:2px;font-weight:700"></div>
+      </div>
+      <select class="emp-select" id="eEstoque"><option value="">Selecione o item disponível…</option></select>
+      <label style="font-size:13px;font-weight:700;color:#666">Data prevista de devolução</label>
+      <input type="date" class="emp-select" id="eDevolucao">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="fecharModal('modalEmprestimo')">Cancelar</button>
+      <button class="btn btn-sm" id="btnSalvarEmp"><i class="fa-solid fa-floppy-disk"></i> Registrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="logo">
+      <i class="fa-solid fa-puzzle-piece"></i>
+      <h2>Brinquedoteca</h2>
+    </div>
+    <nav>
+      <ul>
+        <a href="index.html"><li><i class="fa-solid fa-house"></i> Home</li></a>
+        <a href="itens.html"><li><i class="fa-solid fa-cube"></i> Brinquedos</li></a>
+        <a href="cadastros.html"><li><i class="fa-solid fa-table-list"></i> Cadastros</li></a>
+        <a href="dashboard.html"><li class="active"><i class="fa-solid fa-chart-pie"></i> Dashboard</li></a>
+        <li onclick="sair()"><i class="fa-solid fa-right-from-bracket"></i> Sair</li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Dashboard — visão geral do sistema" readonly style="cursor:default;color:#aaa">
+      </div>
+      <button class="btn" onclick="abrirModalEmprestimo()">
+        <i class="fa-solid fa-plus"></i> Novo Empréstimo
+      </button>
+      <button class="btn btn-success" onclick="recarregar()">
+        <i class="fa-solid fa-rotate"></i>
+      </button>
+    </header>
+
+    <!-- KPIs principais -->
+    <section class="cards" id="cardsKpi">
+      <div class="card"><i class="fa-solid fa-cube"></i><h2 id="cItens">—</h2><p>Total de Itens</p></div>
+      <div class="card"><i class="fa-solid fa-warehouse"></i><h2 id="cEstoque">—</h2><p>Unidades no Estoque</p></div>
+      <div class="card"><i class="fa-solid fa-circle-check" style="color:#4caf50"></i><h2 id="cDisp">—</h2><p>Disponíveis</p></div>
+      <div class="card"><i class="fa-solid fa-arrow-right-arrow-left"></i><h2 id="cEmp">—</h2><p>Emprestados</p></div>
+      <div class="card"><i class="fa-solid fa-child"></i><h2 id="cAlunos">—</h2><p>Alunos</p></div>
+      <div class="card"><i class="fa-solid fa-triangle-exclamation" style="color:#ef5350"></i><h2 id="cAtraso">—</h2><p>Em Atraso</p></div>
+    </section>
+
+    <!-- Linha 1: Donut status estoque + Barras por tipo -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3><i class="fa-solid fa-circle-half-stroke"></i> Status do Estoque</h3>
+        <div class="chart-wrap" style="max-width:180px;margin:0 auto">
+          <canvas id="chartStatus"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3><i class="fa-solid fa-layer-group"></i> Itens por Tipo</h3>
+        <div class="chart-wrap">
+          <canvas id="chartTipo" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha 2: Área de desenvolvimento + Top emprestados -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3><i class="fa-solid fa-brain"></i> Itens por Área de Desenvolvimento</h3>
+        <div class="chart-wrap">
+          <canvas id="chartArea" height="140"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3><i class="fa-solid fa-trophy"></i> Top 5 — Mais Emprestados</h3>
+        <div id="topEmprestados"><div class="chart-loading"><span class="spinner"></span> Carregando…</div></div>
+      </div>
+    </div>
+
+    <!-- Linha 3: Alunos por turma (full width) + Atrasos -->
+    <div class="charts-grid">
+      <div class="chart-card chart-full">
+        <h3><i class="fa-solid fa-users-rectangle"></i> Alunos por Turma</h3>
+        <div class="chart-wrap">
+          <canvas id="chartTurma" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha 4: Empréstimos ativos em atraso -->
+    <div class="section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-clock" style="color:var(--vermelho)"></i> Empréstimos em Atraso</h2>
+        <span id="badgeAtraso" style="background:var(--vermelho);color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800"></span>
+      </div>
+      <div id="listaAtrasos"><div class="loader"><span class="spinner"></span> Carregando…</div></div>
+    </div>
+
+    <!-- Linha 5: Projeções -->
+    <div class="section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-chart-line"></i> Projeções e Indicadores</h2>
+      </div>
+      <div class="kpi-row" id="kpiRow">
+        <div class="kpi azul"><h4 id="pTaxaOcup">—</h4><p>Taxa de Ocupação do Estoque</p></div>
+        <div class="kpi verde"><h4 id="pMediaTurma">—</h4><p>Média de Alunos por Turma</p></div>
+        <div class="kpi roxo"><h4 id="pItemAluno">—</h4><p>Itens por Aluno (potencial)</p></div>
+        <div class="kpi vermelho"><h4 id="pTaxaAtraso">—</h4><p>Taxa de Atraso nos Empréstimos</p></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="js/api.js?v=99"></script>
+<script src="js/auth.js?v=99"></script>
+<script src="js/pages/dashboard.js?v=99"></script>
+</body>
+</html>

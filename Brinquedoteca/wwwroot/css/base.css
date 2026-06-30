@@ -1,0 +1,65 @@
+/* ============================================================
+   BASE — variáveis, reset, tipografia
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --amarelo:       #ffd54f;
+  --amarelo-claro: #fff8e1;
+  --amarelo-hover: #fff3cd;
+  --laranja:       #ff7043;
+  --laranja-dark:  #f4511e;
+  --verde:         #4caf50;
+  --vermelho:      #ef5350;
+  --cinza-texto:   #444;
+  --cinza-leve:    #eee;
+  --branco:        #fff;
+  --sombra:        0 5px 20px rgba(0,0,0,0.09);
+  --radius:        16px;
+  --radius-sm:     10px;
+  --sidebar-w:     260px;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: url('https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=1974&auto=format&fit=crop')
+              no-repeat center center / cover fixed;
+  color: var(--cinza-texto);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.84);
+  z-index: 0;
+}
+
+/* ---- Animações ---- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--amarelo-claro); }
+::-webkit-scrollbar-thumb { background: #ffb74d; border-radius: 20px; }

@@ -1,0 +1,31 @@
+# =============================
+#  Build outputs
+# =============================
+bin/
+obj/
+
+# =============================
+#  IDE / Editor
+# =============================
+.vs/
+.vscode/
+*.user
+*.suo
+*.lscache
+.idea/
+
+# =============================
+#  🔒 ARQUIVOS SENSÍVEIS
+#  Nunca versionar estes arquivos!
+# =============================
+appsettings.Development.json
+appsettings.Production.json
+
+# Backup de banco de dados
+BancoBackup/
+
+# =============================
+#  Sistema operacional
+# =============================
+.DS_Store
+Thumbs.db
